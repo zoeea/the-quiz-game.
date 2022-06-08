@@ -1,5 +1,6 @@
 import random
 
+
 # Function used to check input is valid
 
 # Check for an integer more than 0
@@ -12,7 +13,7 @@ def num_check(question):
         round_error = "Please type either <enter> " \
                       "or an integer that is more than 0 "
 
-        if response == "" or response =="xxx":
+        if response == "" or response == "xxx":
             return response
 
         else:
@@ -53,12 +54,11 @@ def check_rounds():
             except ValueError:
                 print(round_error)
                 continue
-        
+
         return response
 
 
 def choice_checker(question, valid_list, error):
-
     valid = False
     while not valid:
 
@@ -77,95 +77,54 @@ def choice_checker(question, valid_list, error):
         print(error)
         print()
 
+# Generate 3 random numbers between 1 and 1000
 
-def intcheck(question, low=None, high=None, exit_code = None):
-
-    while True:
-
-        # sets up error messages
-        if low is not None and high is not None:
-            error = "Please enter an integer between {} and {} (inclusive)".format(low, high)
-        elif low is not None and high is None:
-            error = "Please enter an integer that is more than or equal to {}".format(low)
-        elif low is None and high is not None:
-            error = "Please enter an integer that is less than or equal to {}".format(high)
-        else:
-            error = "Please enter an integer"
-
-        try:
-            response = input(question)
-
-            # check to see if response is the exit code and return it
-            if response == exit_code:
-                return response
-
-            # change the response into an integer
-            else:
-                response = int(response)
-
-            # Checks response is not too low, not use of 'is not' keywords
-            if low is not None and response < low:
-                print(error)
-                continue
-
-            # Checks response is not too high
-            if high is not None and response > high:
-                print(error)
-                continue
-
-            return response
-
-        # checks input is a integer
-        except ValueError:
-            print(error)
-            continue
-
-#Generate 3 random numbers between 1 and 1000
-random.list = random.sample(range(1, 1000), 3)
 
 
 # prints instructions
 
 def instructions():
     print()
-    print("  * First you will choose how many rounds you would like to play or press <enter> for infinite mode.   ")
+    print("  * First you will choose how many Questions you would like or press <enter> for infinite Questions.   ")
     print("  * Then the computer will give you three numbers from which you will pick the highest number.   ")
     print("  * If you get it wrong the computer will tell you so and the rounds will continue and so forth.   ")
     print()
 
+
 # start of game !!!!!
 
 print()
-print("   Welcome to this Game!  ")        
+print("   Welcome to this Game!  ")
 print()
 
 # ask user if they need instructions...
-played_before = choice_checker("Have you played the game before? ", ["yes", "no"], "Please enter yes or no")
+played_before = choice_checker("Have you played this Quiz before? ", ["yes", "no"], "Please enter yes or no")
 print()
 
 if played_before == "no":
-    instructions() 
+    instructions()
 
-# set game parameters 
+# set game parameters
 # How many rounds , or infinite mode
 # Main routine goes here....
 rounds_played = 0
 
-secret = random.choice(random.list)
+
 
 # Ask user for # of rounds, <enter> for infinite mode
-rounds = num_check("How many rounds? <enter> for infinite mode")
+rounds = num_check("How many Questions? <enter> for infinite mode")
 
 if rounds == "":
     print("You have chosen infinite mode")
 else:
-    print("You have chosen {} rounds".format(rounds))
+    print("You have chosen {} Questions".format(rounds))
     print()
 
 end_game = "no"
 while end_game == "no":
     # Start of game play loop
-
+    number_list = random.sample(range(1, 101), 3)
+    random_num= max(number_list)
     rounds_played += 1
 
     # Rounds Heading
@@ -175,12 +134,11 @@ while end_game == "no":
         "Round {}".format(rounds_played)
 
     else:
-        heading = "Rounds {} of {}".format(rounds_played, rounds)
+        heading = "Question {} of {}".format(rounds_played, rounds)
 
     print(heading)
-    print(random.list)
-    guess = input("Guess: ")  # replace with call to number checking function
-
+    print(number_list)
+    guess = input("Guess: ")
     # end game if exit code is typed
     if guess == "xxx":
         break
@@ -190,18 +148,37 @@ while end_game == "no":
     # rest of loop / game
     print("You guessed {}".format(guess))
 
+    if int(guess) == random_num:
+        print("You have guessed the correct number")
+    elif random_num > int(guess):
+        print("You have guessed wrong")
+    elif int(guess) > random_num :
+        print("You have guessed the wrong number ")
 
-    if guess == secret:
-        print("You have guessed correct")
-    elif guess != secret:
-        print("You have guessed the wrong number")
+
+        # end game if required
 
 
 
 
-    # end game if required
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+#          0000              0000
+#        00000000          000000000
+#          0000              0000
+
+#             00   00
+#               090
+#          /                 /
+#          //00            00//
+#           //00        00//
+#           //0000000000//
+
+
+
