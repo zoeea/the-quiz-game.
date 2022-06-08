@@ -85,9 +85,11 @@ def choice_checker(question, valid_list, error):
 
 def instructions():
     print()
-    print("  * First you will choose how many Questions you would like or press <enter> for infinite Questions.   ")
-    print("  * Then the computer will give you three numbers from which you will pick the highest number.   ")
-    print("  * If you get it wrong the computer will tell you so and the rounds will continue and so forth.   ")
+    print("  --- First you will choose how many Questions you would like or press <enter> for infinite Questions.---")
+    print()
+    print("  --- Then the computer will give you three numbers from which you will pick the highest number. ------  ")
+    print()
+    print("  --- If you get it wrong the computer will tell you so and the questions will continue and so forth.----   ")
     print()
 
 
@@ -139,11 +141,11 @@ while end_game == "no":
     print(heading)
     print(number_list)
     guess = input("Guess: ")
+
     # end game if exit code is typed
     if guess == "xxx":
         break
-    elif rounds_played == rounds:
-        break
+
 
     # rest of loop / game
     print("You guessed {}".format(guess))
@@ -155,11 +157,15 @@ while end_game == "no":
     elif int(guess) > random_num :
         print("You have guessed the wrong number ")
 
+    # exit games when questions are done
+    if rounds_played == rounds:
+        break
+
 
         # end game if required
 
 
-
+# end of game summaruy
 
 
 
