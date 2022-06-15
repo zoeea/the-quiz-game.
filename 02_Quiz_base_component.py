@@ -5,16 +5,19 @@ import random
 
 # Check for an integer more than 0
 
-def num_check(question, high):
-    error = "please enter a whole number between 1 and 10 \n "
+def num_check(question, exit_code):
+    error = "please enter a whole number between 1 and 100 \n "
 
     valid = False
     while not valid:
         try:
             # ask the question
             response = int(input(question))
+            # if exit code is typed
+            if response == exit_code:
+                return response
             # if the amount is too low / too high give
-            if 0 < response <= high:
+            if 0 < response <= 101:
                 return response
 
             # output an error
@@ -50,6 +53,7 @@ def choice_checker(question, valid_list, error):
 
 
 def instructions():
+    print("                      ++++ How to play ++++              ")
     print()
     print("  --- First you will choose how many Questions you would like or press <enter> for infinite Questions.---")
     print()
@@ -57,6 +61,13 @@ def instructions():
     print()
     print("  --- If you get it wrong the computer will tell you so and the questions will continue and so forth.----   ")
     print()
+
+
+# list of valid responses
+
+
+# list to hold summary / rounds history
+game_summary = []
 
 
 # start of game !!!!!
@@ -77,9 +88,11 @@ if played_before == "no":
 # Main routine goes here....
 rounds_played = 0
 
+game_summary = []
+
 # Ask user for # of rounds, <enter> for infinite mode
 
-rounds = num_check("How many Questions? <enter> for infinite mode",10)
+rounds = num_check("How many Questions? <enter> for infinite mode","xxx")
 
 if rounds == "":
     print("You have chosen infinite mode")
@@ -91,7 +104,7 @@ end_game = "no"
 while end_game == "no":
 
     # Start of game play loop
-    number_list = random.sample(range(1, 1001), 3)
+    number_list = random.sample(range(1, 101), 3)
     random_num= max(number_list)
     rounds_played += 1
 
@@ -106,9 +119,8 @@ while end_game == "no":
 
     print(heading)
     print(number_list)
-    guess = input("Guess: ")
-
-
+    guess=num_check("Guess", "xxx")
+    
     # end game if exit code is typed
     if guess == "xxx":
         break
@@ -118,21 +130,65 @@ while end_game == "no":
     print("You guessed {}".format(guess))
 
     if int(guess) == random_num:
-        print("You have guessed the correct number")
+        result="Have Correctly Guessed"
     elif random_num > int(guess):
-        print("You have guessed wrong")
+        rounds_lost = +1
+        result="Have Incorrectly guessed"
     elif int(guess) > random_num :
-        print("You have guessed the wrong number ")
-
+        rounds_lost = +1
+        result="Have Incorrectly guessed"
     # exit games when questions are done
     if rounds_played == rounds:
         break
+    # end game if exit code is typed
+        if guess == "xxx":
+            break
+
+    feedback = "you {}".format(result)
+    outcome = "Round {}: {}".format(rounds_played, feedback)
+
+    print(feedback)
+    game_summary.append(outcome)
 
 
-        # end game if required
+# defining rounds won
+rounds_won = rounds_played - rounds_lost
+
+# **** Calculate Game Statistics ******
+percent_win = rounds_won / rounds_played * 100
+percent_lose = rounds_lost / rounds_played * 100
+
+print()
+print("***** Quiz statistics ******")
+
+print()
 
 
-# end of game summaruy
+# displays game stats with % values to the nearest whole number
+print("Win: {}, ({:.0f}%)\nLoss: {}, ({:.0f}%) ".format(rounds_won,
+                                                        percent_win,
+                                                        rounds_lost,
+                                                        percent_lose,
+                                                        ))
+
+# Quiz history - questions 1 forwards
+
+print()
+print("***** Game History ******")
+for game in game_summary:
+    print(game)
+
+print()
+
+# game summary
+
+
+
+
+
+
+
+
 
 
 
@@ -148,10 +204,10 @@ while end_game == "no":
 
 #             00   00
 #               090
-#          /                 /
-#          //00            00//
-#           //00        00//
-#           //0000000000//
+#         /                 /
+#         //00            00//
+#          //00        00//
+#          //0000000000//
 
 
 
