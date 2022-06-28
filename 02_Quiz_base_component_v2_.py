@@ -54,7 +54,7 @@ def choice_checker(question, valid_list, error):
 def instructions():
     print("                      ++++ How to play ++++              ")
     print()
-    print("  --- First you will choose how many Questions you would like .---")
+    print("  --- First you will choose how many Questions you would like or press <enter> for infinite Questions.---")
     print()
     print("  --- Then the computer will give you three numbers from which you will pick the highest number. ------  ")
     print()
@@ -92,10 +92,13 @@ rounds_lost = 0
 
 # Ask user for # of rounds, <enter> for infinite mode
 
-rounds = num_check("How many Questions? ","xxx")
+rounds = num_check("How many Questions? <enter> for infinite mode","xxx")
 
-print("You have chosen {} Questions".format(rounds))
-print()
+if rounds == "":
+    print("You have chosen infinite mode")
+else:
+    print("You have chosen {} Questions".format(rounds))
+    print()
 
 end_game = "no"
 while end_game == "no":
@@ -107,8 +110,12 @@ while end_game == "no":
 
     # Rounds Heading
     print()
-    rounds == ""
-    heading = "Question {} of {}".format(rounds_played, rounds)
+    if rounds == "":
+        heading = "Continuous Mode:"
+        "Round {}".format(rounds_played)
+
+    else:
+        heading = "Question {} of {}".format(rounds_played, rounds)
 
     print(heading)
     print(number_list)
@@ -131,17 +138,20 @@ while end_game == "no":
         rounds_lost = +1
         result="Have Incorrectly guessed"
 
+    # end game if exit code is typed
+    if guess == "xxx":
+            break
+    # exit games when questions are done
+    if rounds_played == rounds:
+        break
 
 
     feedback = "you {}".format(result)
-    outcome = "Question {}: {}".format(rounds_played, feedback)
+    outcome = "Round {}: {}".format(rounds_played, feedback)
 
     print(feedback)
     game_summary.append(outcome)
 
-    # end game if exit code is typed
-    if guess == "xxx":
-        break
     # exit games when questions are done
     if rounds_played == rounds:
         break

@@ -1,34 +1,64 @@
 import random
 
-
 # Function used to check input is valid
 
 # Check for an integer more than 0
 
-def num_check(question, exit_code):
-    error = "please enter a whole number between 1 and 100 \n "
 
-    valid = False
-    while not valid:
-        try:
-            # ask the question
-            response = int(input(question))
-            # if exit code is typed
-            if response == exit_code:
-                return response
-            # if the amount is too low / too high give
-            if 0 < response <= 101:
-                return response
+def num_check(question):
+    while True:
+        response = input(question).lower()
 
-            # output an error
-            else:
-                print(error)
+        round_error = "Please type either <enter> " \
+                      "or an integer that is more than 0 "
 
-        except ValueError:
-            print(error)
+        if response == "" or response =="xxx":
+            return response
+
+        else:
+            try:
+                response = int(response)
+
+                if response < 1:
+                    print(round_error)
+                    continue
+
+            except ValueError:
+                print(round_error)
+                continue
+
+        return response
+
+
+def check_rounds():
+    while True:
+
+        round_error = "Please type either <enter> " \
+                      "or an integer that is more than 0\n "
+
+        # if infinite mode not chosen, check response
+        # is an integer that is more than 0
+        if response != "":
+            try:
+                response = int(response)
+
+                # if response is too low, go bak to
+                # start of loop
+                if response < 1:
+                    print(round_error)
+                    continue
+
+            # if response is not an integer go back to
+            # start of loop
+            except ValueError:
+                print(round_error)
+                continue
+        
+        return response
 
 
 def choice_checker(question, valid_list, error):
+
     valid = False
     while not valid:
 
@@ -47,65 +77,95 @@ def choice_checker(question, valid_list, error):
         print(error)
         print()
 
-# Generate 3 random numbers between 1 and 1000
+
+def intcheck(question, low=None, high=None, exit_code = None):
+
+    while True:
+
+        # sets up error messages
+        if low is not None and high is not None:
+            error = "Please enter an integer between {} and {} (inclusive)".format(low, high)
+        elif low is not None and high is None:
+            error = "Please enter an integer that is more than or equal to {}".format(low)
+        elif low is None and high is not None:
+            error = "Please enter an integer that is less than or equal to {}".format(high)
+        else:
+            error = "Please enter an integer"
+
+        try:
+            response = input(question)
+
+            # check to see if response is the exit code and return it
+            if response == exit_code:
+                return response
+
+            # change the response into an integer
+            else:
+                response = int(response)
+
+            # Checks response is not too low, not use of 'is not' keywords
+            if low is not None and response < low:
+                print(error)
+                continue
+
+            # Checks response is not too high
+            if high is not None and response > high:
+                print(error)
+                continue
+
+            return response
+
+        # checks input is a integer
+        except ValueError:
+            print(error)
+            continue
+
+#Generate 3 random numbers between 1 and 1000
+random.list = random.sample(range(1, 1000), 3)
+
 
 # prints instructions
 
-
 def instructions():
-    print("                      ++++ How to play ++++              ")
     print()
-    print("  --- First you will choose how many Questions you would like or press <enter> for infinite Questions.---")
+    print("  * First you will choose how many rounds you would like to play or press <enter> for infinite mode.   ")
+    print("  * Then the computer will give you three numbers from which you will pick the highest number.   ")
+    print("  * If you get it wrong the computer will tell you so and the rounds will continue and so forth.   ")
     print()
-    print("  --- Then the computer will give you three numbers from which you will pick the highest number. ------  ")
-    print()
-    print("  --- If you get it wrong the computer will tell you so and the questions will continue and so forth.----   ")
-    print()
-
-
-# list of valid responses
-
-
-# list to hold summary / rounds history
-game_summary = []
-
 
 # start of game !!!!!
 
 print()
-print("   Welcome to this Game!  ")
+print("   Welcome to this Game!  ")        
 print()
 
 # ask user if they need instructions...
-played_before = choice_checker("Have you played this Quiz before? ", ["yes", "no"], "Please enter yes or no")
+played_before = choice_checker("Have you played the game before? ", ["yes", "no"], "Please enter yes or no")
 print()
 
 if played_before == "no":
-    instructions()
+    instructions() 
 
-# set game parameters
+# set game parameters 
 # How many rounds , or infinite mode
 # Main routine goes here....
 rounds_played = 0
 
-game_summary = []
+secret = random.choice(random.list)
 
 # Ask user for # of rounds, <enter> for infinite mode
-
-rounds = num_check("How many Questions? <enter> for infinite mode","xxx")
+rounds = num_check("How many rounds? <enter> for infinite mode")
 
 if rounds == "":
     print("You have chosen infinite mode")
 else:
-    print("You have chosen {} Questions".format(rounds))
+    print("You have chosen {} rounds".format(rounds))
     print()
 
 end_game = "no"
 while end_game == "no":
-
     # Start of game play loop
-    number_list = random.sample(range(1, 101), 3)
-    random_num= max(number_list)
+
     rounds_played += 1
 
     # Rounds Heading
@@ -115,99 +175,31 @@ while end_game == "no":
         "Round {}".format(rounds_played)
 
     else:
-        heading = "Question {} of {}".format(rounds_played, rounds)
+        heading = "Rounds {} of {}".format(rounds_played, rounds)
 
     print(heading)
-    print(number_list)
-    guess=num_check("Guess", "xxx")
-    
+    print(random.list)
+    guess = input("Guess: ")
+
     # end game if exit code is typed
     if guess == "xxx":
         break
-
+    elif rounds_played == rounds:
+        break
 
     # rest of loop / game
     print("You guessed {}".format(guess))
 
-    if int(guess) == random_num:
-        result="Have Correctly Guessed"
-    elif random_num > int(guess):
-        rounds_lost = +1
-        result="Have Incorrectly guessed"
-    elif int(guess) > random_num :
-        rounds_lost = +1
-        result="Have Incorrectly guessed"
-    # exit games when questions are done
-    if rounds_played == rounds:
-        break
-    # end game if exit code is typed
-        if guess == "xxx":
-            break
 
-    feedback = "you {}".format(result)
-    outcome = "Round {}: {}".format(rounds_played, feedback)
-
-    print(feedback)
-    game_summary.append(outcome)
+    if guess == secret:
+        print("You have guessed correct")
+    elif guess != secret:
+        print("You have guessed the wrong number")
 
 
-# defining rounds won
-rounds_won = rounds_played - rounds_lost
-
-# **** Calculate Game Statistics ******
-percent_win = rounds_won / rounds_played * 100
-percent_lose = rounds_lost / rounds_played * 100
-
-print()
-print("***** Quiz statistics ******")
-
-print()
-
-
-# displays game stats with % values to the nearest whole number
-print("Win: {}, ({:.0f}%)\nLoss: {}, ({:.0f}%) ".format(rounds_won,
-                                                        percent_win,
-                                                        rounds_lost,
-                                                        percent_lose,
-                                                        ))
-
-# Quiz history - questions 1 forwards
-
-print()
-print("***** Game History ******")
-for game in game_summary:
-    print(game)
-
-print()
-
-# game summary
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#          0000              0000
-#        00000000          000000000
-#          0000              0000
-
-#             00   00
-#               090
-#         /                 /
-#         //00            00//
-#          //00        00//
-#          //0000000000//
-
-
-
+# end game if required
+    
+    
+    
+    
+    
