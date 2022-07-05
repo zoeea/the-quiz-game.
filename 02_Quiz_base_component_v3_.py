@@ -5,27 +5,32 @@ import random
 
 # Check for an integer more than 0
 
-def num_check(question, exit_code):
-    error = "please enter a whole number between 1 and 100 \n "
+def num_check(question, low=None, high=None, exit_code = None):
+    error = "please enter a whole number between {} and {}\n ".format(low, high)
 
-    valid = False
-    while not valid:
+    while True:
+
+        response = input(question)
+
+        # check to see if response is the exit code and return it
+        if response == exit_code:
+            return response
+
         try:
-            # ask the question
-            response = int(input(question))
-            # if exit code is typed
-            if response == exit_code:
-                return response
+
+            response = int(response)
+
             # if the amount is too low / too high give
-            if 0 < response <= 101:
+            if low < response <= high:
                 return response
 
             # output an error
             else:
                 print(error)
 
+        # checks input is a integer
         except ValueError:
-            print(error)
+            continue
 
 
 def choice_checker(question, valid_list, error):
@@ -92,7 +97,7 @@ rounds_lost = 0
 
 # Ask user for # of rounds, <enter> for infinite mode
 
-rounds = num_check("How many Questions? ","xxx")
+rounds = num_check("How many Questions? ",1 , 100, exit_code="")
 
 print("You have chosen {} Questions".format(rounds))
 print()
@@ -102,7 +107,7 @@ while end_game == "no":
 
     # Start of game play loop
     number_list = random.sample(range(1, 101), 3)
-    random_num= max(number_list)
+    random_num = max(number_list)
     rounds_played += 1
 
     # Rounds Heading
@@ -112,36 +117,38 @@ while end_game == "no":
 
     print(heading)
     print(number_list)
-    guess=num_check("Guess", "xxx")
-    
+
+    # check the guess was a number between 1 and 100
+    guess = num_check("Guess: ", 1, 100, "xxx")
+
     # end game if exit code is typed
     if guess == "xxx":
         break
 
-
+    # change guess to an integer
+    guess_int = int(guess)
     # rest of loop / game
-    print("You guessed {}".format(guess))
 
-    if int(guess) == random_num:
-        result="Have Correctly Guessed"
-    elif random_num > int(guess):
+    # Check the number guessed
+    if guess_int == random_num:
+        result = "have Correctly Guessed"
+    elif random_num > guess_int:
         rounds_lost = +1
-        result="Have Incorrectly guessed"
-    elif int(guess) > random_num :
+        result = "have Incorrectly guessed"
+    elif guess_int > random_num:
         rounds_lost = +1
-        result="Have Incorrectly guessed"
+        result = "have Incorrectly guessed"
 
+    # tell user what was guessed.
+    print(" You guessed {}".format(guess))
 
-
-    feedback = "you {}".format(result)
+    # prepare to give the user feedback/ for the end of game summary
+    feedback = "you {} , the largest number was {}".format(result,random_num)
     outcome = "Question {}: {}".format(rounds_played, feedback)
 
     print(feedback)
     game_summary.append(outcome)
 
-    # end game if exit code is typed
-    if guess == "xxx":
-        break
     # exit games when questions are done
     if rounds_played == rounds:
         break
@@ -150,6 +157,7 @@ while end_game == "no":
 rounds_won = rounds_played - rounds_lost
 
 # **** Calculate Game Statistics ******
+# figuring out how many were lost and won.
 percent_win = rounds_won / rounds_played * 100
 percent_lose = rounds_lost / rounds_played * 100
 
@@ -175,7 +183,7 @@ for game in game_summary:
 
 print()
 
-# game summary
+
 
 
 
