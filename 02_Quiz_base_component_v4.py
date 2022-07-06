@@ -77,7 +77,7 @@ print()
 # ask user if they need instructions...
 played_before = choice_checker("Have you played this Quiz before? ", ["yes", "no"], "Please enter yes or no")
 print()
-# check what the user said and if they didnt know how to play print instructions.
+# check what the user said and if they don't know how to play print instructions.
 if played_before == "no":
     instructions()
 
@@ -87,29 +87,26 @@ if played_before == "no":
 rounds_played = 0
 rounds_lost = 0
 
-# Ask user for # of rounds, <enter> for infinite mode
-
-rounds = num_check("How many Questions? ", 1, 100, exit_code="")
-
-# show the user what they have chosen
-print("You have chosen {} Questions".format(rounds))
-print()
+# Ask user for # of rounds, <enter> for infinite mode, check it is correct.
+rounds = num_check("How many Questions or <enter> for infinite mode? ", 1, 1000000000, exit_code="")
 
 end_game = "no"
 while end_game == "no":
-
     # Start of game play loop
     # we are creating the highest number in the list
     number_list = random.sample(range(1, 101), 3)
     random_num = max(number_list)
-    rounds_played += 1
 
     # Rounds Heading
-    # ask how many questions
     print()
-    rounds == ""
-    heading = "Question {} of {}".format(rounds_played, rounds)
+    if rounds == "":
+        heading = "Continuous Mode:"
+        "Question {}".format(rounds_played + 1)
 
+    else:
+        heading = "Questions {} of {}".format(rounds_played + 1, rounds)
+
+    # Heading
     print(heading)
     print(number_list)
 
@@ -120,10 +117,13 @@ while end_game == "no":
     if guess == "xxx":
         break
 
+    # set game rounds
+    rounds_played += 1
+
     # change guess to an integer
     guess_int = int(guess)
-    # rest of loop / game
 
+    # rest of loop / game
     # Check the number guessed is correct or wrong
     if guess_int == random_num:
         result = "have Correctly Guessed"
@@ -156,11 +156,11 @@ rounds_won = rounds_played - rounds_lost
 percent_win = rounds_won / rounds_played * 100
 percent_lose = rounds_lost / rounds_played * 100
 
+
 print()
 print("***** Quiz statistics ******")
 
 print()
-
 
 # displays game stats with % values to the nearest whole number
 print("Win: {}, ({:.0f}%)\nLoss: {}, ({:.0f}%) ".format(rounds_won,
@@ -177,35 +177,3 @@ print("***** Game History ******")
 for game in game_summary:
     print(game)
 print()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#          0000              0000
-#        00000000          000000000
-#          0000              0000
-
-#             00   00
-#               090
-#         /                 /
-#         //00            00//
-#          //00        00//
-#          //0000000000//
-
-
-
